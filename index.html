@@ -2,96 +2,41 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, orientation=landscape">
-    <title>Quantum Royale | Clash x Fire Academia</title>
-    <link href="https://fonts.googleapis.com/css2?family=Bangers&family=Fredoka:wght@600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clash of Knowledge</title>
+    <link rel="stylesheet" href="style.css">
 </head>
-<body class="landscape-mode">
-    <div id="app-container">
-        
-        <div id="lobby-screen" class="screen">
-            <header class="hud-top glass-panel">
-                <div class="player-stats">
-                    <div class="rank-badge-container">
-                        <div id="rank-icon">🎖️</div>
-                        <div class="rank-text">
-                            <span id="rank-name" class="vivid-gold">HERALDO V</span>
-                            <span id="rank-xp">XP: 1250 / 2000</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="currency-stats">
-                    <span class="vivid-yellow">💰 5000</span>
-                    <span class="vivid-blue">💎 50</span>
-                </div>
-            </header>
+<body>
+    <div id="game-container">
+        <header>
+            <div class="stats">
+                <span id="rank-name">Rango: Bronce</span>
+                <span id="trophies">🏆 0</span>
+            </div>
+        </header>
 
-            <main class="lobby-center">
-                <div class="deck-selector">
-                    <h3>TU MAZO DE CONOCIMIENTO</h3>
-                    <div class="card-grid">
-                        <button class="knowledge-card physical" onclick="selectCard('Física')">
-                            <div class="card-icon">⚡</div>
-                            <span>Física</span>
-                        </button>
-                        <button class="knowledge-card chemical" onclick="selectCard('Química')">
-                            <div class="card-icon">🧪</div>
-                            <span>Química</span>
-                        </button>
-                        <button class="knowledge-card math" onclick="selectCard('Mates')">
-                            <div class="card-icon">🔢</div>
-                            <span>Mates</span>
-                        </button>
-                    </div>
-                </div>
-            </main>
-
-            <footer class="lobby-footer">
-                <div class="battle-hud-fire">
-                    <div class="current-rank-display">
-                        <span class="vivid-gold">HERALDO V</span>
-                        <div class="rank-bar"><div id="rank-bar-fill"></div></div>
-                    </div>
-                    <button id="btn-start-battle" onclick="startQuantumBattle()">
-                        ¡DUELO QUANTUM!
-                    </button>
-                </div>
-            </footer>
+        <div id="setup-screen">
+            <h1>Selecciona tu Batalla</h1>
+            <select id="subject-select">
+                <option value="fisica">Física</option>
+                <option value="quimica">Química</option>
+                <option value="matematicas">Matemáticas</option>
+                <option value="biologia">Biología</option>
+            </select>
+            <button onclick="startBattle()">¡BATALLA!</button>
         </div>
 
-        <div id="battle-screen" class="screen hidden portrait-mode">
-            <div class="battle-layout">
-                <div class="arena-boss">
-                    <div class="health-container boss-hp">
-                        <div class="hp-bar enemy-hp"><div id="enemy-fill"></div></div>
-                        <span class="hp-label">BOSS IA</span>
-                    </div>
-                    <div id="boss-sprite">👹</div>
-                </div>
-
-                <div id="quiz-battle-zone">
-                    <div class="quiz-bubble-clash">
-                        <p id="question-text">Analizando tu mente... Preparando desafío.</p>
-                    </div>
-                    <div id="options-clash-container">
-                        </div>
-                </div>
-
-                <div class="arena-player">
-                    <div id="player-sprite">🛡️</div>
-                    <div class="health-container player-hp">
-                        <div class="hp-bar player-hp"><div id="player-fill"></div></div>
-                        <span class="hp-label">TÚ (GUERRERO)</span>
-                    </div>
-                </div>
+        <div id="battle-screen" class="hidden">
+            <div id="ia-message" class="bubble">Esperando pregunta...</div>
+            <div id="quiz-container">
+                <h2 id="question-text">Pregunta</h2>
+                <div id="options-container"></div>
+            </div>
+            <div class="battle-footer">
+                <span id="question-count">Pregunta: 1/10</span>
             </div>
         </div>
-
-        <audio id="bg-music-lobby" loop src="https://codeskulptor-demos.commondatastorage.googleapis.com/descent/background%20music.mp3"></audio>
-        <audio id="bg-music-battle" loop src="https://codeskulptor-demos.commondatastorage.googleapis.com/descent/CIE_5.mp3"></audio>
-        <audio id="sfx-hit" src="https://codeskulptor-demos.commondatastorage.googleapis.com/descent/got%20it.mp3"></audio>
     </div>
-    <script src="./script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
