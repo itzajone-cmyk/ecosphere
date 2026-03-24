@@ -3,46 +3,67 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EcoSphere AI | Bachillerato Pro</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <title>EcoSphere X: Cyber-Academia 2027</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="game-container">
-        <header class="status-panel">
-            <div class="stat-box">
-                <span class="stat-label">RANGO</span>
-                <span id="rank-name" class="stat-value">Semilla</span>
-                <span id="rank-icon">🌑</span>
+        <header class="hud-top">
+            <div class="user-profile" onclick="showPlayerCard()">
+                <div id="avatar-container">👤</div>
+                <div class="user-info">
+                    <span id="player-name">Guerrero_01</span>
+                    <span id="rank-badge">Rango: Semilla</span>
+                </div>
             </div>
-            <div class="progress-container">
-                <div class="level-info">Nivel <span id="level-num">1</span></div>
-                <div class="xp-bar"><div id="xp-fill"></div></div>
-                <div id="xp-counter">0 / 250 XP</div>
+            <div class="streak-counter">
+                <span id="streak-days">🔥 0</span>
             </div>
         </header>
 
-        <main id="world-view" class="gray-world">
+        <main id="world-viewport" class="gray-land">
             <div id="nature-layer"></div>
-            <div class="world-label">
-                <p id="env-msg">El bioma está inerte. Planta conocimiento.</p>
+            <div id="pet-companion" class="egg">
+                <div id="pet-visual">🥚</div>
+                <div id="pet-speech" class="hidden">¡Hola! Estudia para hacerme nacer.</div>
+            </div>
+            
+            <div id="boss-container" class="hidden">
+                <div id="boss-visual">👾</div>
+                <div id="boss-hp-bar"><div id="boss-hp-fill"></div></div>
             </div>
         </main>
 
-        <footer class="ai-console">
-            <div class="ai-header">
-                <div class="ai-led" id="status-led"></div>
-                <h3>ORÁCULO ESTUDIANTIL v2.7</h3>
+        <footer class="ai-terminal">
+            <div class="xp-progress">
+                <div id="xp-bar-fill"></div>
+                <span id="xp-text">0 / 250 XP</span>
             </div>
-            <div class="input-area">
-                <textarea id="task-input" placeholder="¿Qué aprendiste hoy? (Ej: Ley de Newton, Fotosíntesis...)"></textarea>
-                <button onclick="processStudy()" id="btn-action">PLANTAR 🌿</button>
+            
+            <div class="terminal-body">
+                <div id="ai-chat-history">
+                    <p class="ai-msg">Soy el Oráculo. Transmite tu conocimiento para evolucionar.</p>
+                </div>
+                <div class="input-group">
+                    <textarea id="study-input" placeholder="Escribe el tema que estudiaste..."></textarea>
+                    <button id="btn-transmit" onclick="handleInteraction()">TRANSMITIR ⚡</button>
+                </div>
             </div>
-            <div id="ai-feedback">
-                <p id="ai-text">Sistema listo para procesar datos...</p>
-            </div>
-        </footer>
+        </header>
     </div>
+
+    <div id="card-modal" class="modal hidden" onclick="closeModal()">
+        <div class="card-content" id="player-card">
+            <h2>ID DE GUERRERO ECOSPHERE</h2>
+            <div class="card-avatar">🛡️</div>
+            <h1 id="card-name">ESTUDIANTE PRO</h1>
+            <p>RANGO: <span id="card-rank">NOVATO</span></p>
+            <p>TEMAS DOMINADOS: <span id="card-topics">0</span></p>
+            <div class="card-footer">WEB APP 2027</div>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>
