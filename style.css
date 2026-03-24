@@ -1,72 +1,108 @@
-:root {
-    --bg: #e0e5ec;
-    --primary: #4facfe;
-    --success: #00f2fe;
-    --grass: #2ecc71;
-    --text: #2c3e50;
-    --shadow: 9px 9px 16px rgb(163,177,198,0.6), -9px -9px 16px rgba(255,255,255, 0.5);
+let game = {
+    xp: 0,
+    lvl: 1,
+    streak: 0,
+    topics: 0,
+    petStage: 0, // 0: Huevo, 1: Bebé, 2: Guerrero
+    inQuiz: false,
+    currentTopic: ""
+};
+
+const ranks = ["Semilla Inerte", "Brote Guerrero", "Raíz Maestra", "Tallo Guardián", "Árbol Sabio", "Bosque Ancestral", "Bioma Legendario", "Guardián de Gaia"];
+
+function handleInteraction() {
+    const input = document.getElementById('study-input');
+    const text = input.value.trim();
+    
+    if(!text) return;
+
+    if(game.inQuiz) {
+        validateAnswer(text);
+    } else {
+        startStudyProcessing(text);
+    }
+    input.value = "";
 }
 
-body {
-    margin: 0; font-family: 'Fredoka', sans-serif;
-    background-color: var(--bg); color: var(--text);
-    height: 100vh; display: flex; justify-content: center;
+function startStudyProcessing(text) {
+    game.currentTopic = text;
+    game.topics++;
+    addXP(Math.min(text.length, 50));
+    
+    // Simulación de IA que "lee" tu tema y genera una pregunta
+    const aiMsg = document.getElementById('ai-chat-history');
+    aiMsg.innerHTML += `<p class="user-msg">Estudié: ${text}</p>`;
+    
+    setTimeout(() => {
+        game.inQuiz = true;
+        const question = `Interesante... si realmente sabes de "${text.substring(0,20)}", dime: ¿Cuál es el punto más importante que un bachiller debe recordar de esto?`;
+        aiMsg.innerHTML += `<p class="ai-msg"><b>ORÁCULO:</b> ${question}</p>`;
+        aiMsg.scrollTop = aiMsg.scrollHeight;
+    }, 1000);
 }
 
-#game-container {
-    width: 100%; max-width: 450px; height: 100%;
-    display: flex; flex-direction: column; background: var(--bg);
+function validateAnswer(ans) {
+    game.inQuiz = false;
+    addXP(50);
+    const aiMsg = document.getElementById('ai-chat-history');
+    aiMsg.innerHTML += `<p class="ai-msg"><b>ORÁCULO:</b> Respuesta registrada. Tu red neuronal se expande. +50 XP</p>`;
+    
+    // Evolucionar Mascota
+    checkPetEvolution();
+    spawnNature();
 }
 
-/* Header Estilo Neumórfico */
-.status-panel {
-    padding: 20px; display: flex; gap: 15px;
-    background: var(--bg); box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+function addXP(val) {
+    game.xp += val;
+    game.lvl = Math.floor(game.xp / 300) + 1;
+    
+    // UI Update
+    document.getElementById('xp-bar-fill').style.width = (game.xp % 300 / 3) + "%";
+    document.getElementById('xp-text').innerText = `${game.xp % 300} / 300 XP (Lvl ${game.lvl})`;
+    
+    let rankIdx = Math.min(Math.floor(game.xp / 600), ranks.length - 1);
+    document.getElementById('rank-badge').innerText = "Rango: " + ranks[rankIdx];
+
+    if(game.xp > 400) {
+        document.getElementById('world-viewport').className = "vivid-land";
+    }
 }
 
-.stat-box {
-    background: var(--bg); padding: 10px; border-radius: 15px;
-    box-shadow: var(--shadow); text-align: center; min-width: 100px;
+function checkPetEvolution() {
+    const pet = document.getElementById('pet-visual');
+    const bubble = document.getElementById('pet-speech');
+    bubble.classList.remove('hidden');
+
+    if(game.xp > 500 && game.petStage == 0) {
+        game.petStage = 1;
+        pet.innerText = "🦖";
+        bubble.innerText = "¡He nacido! Gracias por estudiar.";
+    } else if(game.xp > 1500 && game.petStage == 1) {
+        game.petStage = 2;
+        pet.innerText = "🐉";
+        bubble.innerText = "¡SOY TU DRAGÓN GUARDIÁN!";
+    }
 }
 
-.stat-label { font-size: 10px; display: block; opacity: 0.7; }
-.stat-value { font-weight: 600; color: var(--primary); font-size: 14px; }
-
-.progress-container { flex-grow: 1; }
-.xp-bar { height: 12px; background: #d1d9e6; border-radius: 10px; margin: 5px 0; overflow: hidden; box-shadow: inset 2px 2px 5px #b8b9be; }
-#xp-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary), var(--success)); transition: 0.5s; }
-
-/* El Mundo */
-#world-view {
-    flex-grow: 1; position: relative; transition: 2s;
-    margin: 20px; border-radius: 30px; box-shadow: var(--shadow);
-    overflow: hidden; display: flex; align-items: center; justify-content: center;
+function spawnNature() {
+    const layer = document.getElementById('nature-layer');
+    const items = ["🌳", "🌸", "🦋", "🍄", "🍀"];
+    const item = document.createElement('span');
+    item.innerText = items[Math.floor(Math.random() * items.length)];
+    item.style.position = "absolute";
+    item.style.left = Math.random() * 80 + "%";
+    item.style.top = Math.random() * 80 + "%";
+    item.style.fontSize = "30px";
+    layer.appendChild(item);
 }
 
-.gray-world { background: #b8b9be; filter: grayscale(1); }
-.vivid-world { background: #a8e063; background: linear-gradient(to top, #a8e063, #24fe41); filter: grayscale(0); }
-
-#nature-layer span { position: absolute; font-size: 40px; animation: pop 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-@keyframes pop { from { transform: scale(0); } to { transform: scale(1); } }
-
-/* Consola IA */
-.ai-console {
-    background: var(--bg); padding: 25px; border-radius: 40px 40px 0 0;
-    box-shadow: 0 -10px 20px rgba(0,0,0,0.05);
+// Funciones del Carnet
+function showPlayerCard() {
+    document.getElementById('card-modal').classList.remove('hidden');
+    document.getElementById('card-rank').innerText = ranks[Math.min(Math.floor(game.xp / 600), ranks.length - 1)];
+    document.getElementById('card-topics').innerText = game.topics;
 }
 
-.ai-led { width: 10px; height: 10px; border-radius: 50%; background: #ff4757; margin-right: 8px; }
-.ai-led.active { background: #2ed573; box-shadow: 0 0 10px #2ed573; }
-
-.input-area { margin-top: 15px; }
-textarea {
-    width: 100%; border: none; padding: 15px; border-radius: 15px;
-    background: var(--bg); box-shadow: inset 2px 2px 5px #b8b9be, inset -3px -3px 7px #ffffff;
-    font-family: inherit; resize: none; margin-bottom: 15px;
-}
-
-#btn-action {
-    width: 100%; padding: 15px; border: none; border-radius: 15px;
-    background: var(--primary); color: white; font-weight: 600;
-    box-shadow: 3px 3px 6px #b8b9be, -3px -3px 6px #ffffff; cursor: pointer;
+function closeModal() {
+    document.getElementById('card-modal').classList.add('hidden');
 }
