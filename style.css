@@ -1,100 +1,110 @@
-/* --- CONFIGURACIÓN GLOBAL VIVA Y MODERNA --- */
+/* --- CONFIGURACIÓN MAESTRA FUSIONADA --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 
 :root {
-    --bg-light: #f4f7f6; /* Fondo claro y limpio */
-    --panel-white: #ffffff;
-    --primary-vivid-green: #2ecc71; /* Verde Esmeralda vivo y saturado */
-    --primary-vivid-blue: #3498db;  /* Azul Brillante y saturado */
-    --vivid-yellow: #f1c40f; /* Amarillo Sol vibrante */
-    --text-dark: #2c3e50;
-    --text-main: #34495e;
-    --polluted-gray: #7f8c8d; /* Gris contaminado base */
+    --vivid-blue: #3498db; /* Azul Real Saturado */
+    --vivid-green: #2ecc71; /* Verde Esmeralda Pleno */
+    --vivid-yellow: #f1c40f; /* Amarillo Sol */
+    --vivid-gold: #f39c12; /* Oro Saturado */
+    --vivid-red: #e74c3c; /* Rojo Cereza */
+    --vivid-blood: #c0392b; /* Rojo Sangre Sólido */
+    --deep-dark: #2c3e50; /* Fondo Battle Royale */
     
-    --font-main: 'Fredoka', sans-serif; /* Fuente redondeada y amigable */
-    --shadow-pop: 0 4px 15px rgba(0, 0, 0, 0.08);
+    --font-vivid: 'Fredoka', sans-serif;
+    --font-action: 'Bangers', cursive; /* Fuente agresiva Free Fire */
+    --shadow-pop: 0 5px 15px rgba(0, 0, 0, 0.2);
     --transition-standard: 0.3s ease;
 }
 
 body {
-    margin: 0; font-family: var(--font-main); background-color: var(--bg-light); color: var(--text-main);
+    margin: 0; font-family: var(--font-vivid); background: var(--deep-dark); color: white;
     height: 100vh; overflow: hidden; display: flex; justify-content: center;
 }
 
-#game-container {
-    width: 100%; max-width: 500px; height: 100%; display: flex; flex-direction: column;
+#app-container {
+    width: 100%; height: 100%; position: relative; display: flex; justify-content: center; align-items: center;
 }
 
-/* Efectos de Cristal Modernos (Glassmorphism) */
-.glass-panel {
-    background: rgba(255, 255, 255, 0.9); backdrop-filter: blur(5px);
-    border: 1px solid rgba(255, 255, 255, 0.3); box-shadow: var(--shadow-pop);
-}
+/* Manejo de Orientación (Cambio Dinámico) */
+.landscape-mode #app-container { max-width: 800px; aspect-ratio: 16/9; border: 5px solid #333; }
+.portrait-mode #app-container { max-width: 450px; aspect-ratio: 9/16; border: 5px solid #222; }
 
-/* HUD Superior */
+.screen { width: 100%; height: 100%; display: flex; flex-direction: column; padding: 15px; transition: 0.5s; }
+.hidden { display: none !important; }
+
+/* --- LOBBY (HORIZONTAL - CLASH STRUCTURE) --- */
 .hud-top {
-    padding: 15px; display: flex; justify-content: space-between; align-items: center;
-    border-radius: 0 0 20px 20px; z-index: 10;
+    background: rgba(0,0,0,0.5); padding: 10px 20px; border-radius: 15px;
+    display: flex; justify-content: space-between; align-items: center; border-bottom: 3px solid #444;
 }
 
-.avatar-badge {
-    font-size: 28px; background: rgba(52, 152, 219, 0.1); width: 45px; height: 45px;
-    display: flex; align-items: center; justify-content: center; border-radius: 50%;
-    border: 2px solid var(--primary-vivid-blue); box-shadow: 0 0 10px rgba(52, 152, 219, 0.2);
+/* Rango estilo Free Fire (Agresivo) */
+.rank-badge-container { display: flex; align-items: center; gap: 10px; }
+#rank-icon { font-size: 30px; filter: drop-shadow(0 0 10px var(--vivid-gold)); }
+.rank-text span { display: block; font-size: 11px; font-weight: bold; }
+#rank-name { font-family: var(--font-action); font-size: 14px; color: var(--vivid-gold); text-transform: uppercase; }
+
+.vivid-yellow { color: var(--vivid-yellow); font-weight: bold; }
+.vivid-blue { color: var(--vivid-blue); font-weight: bold; }
+
+.lobby-center { flex-grow: 1; display: flex; justify-content: center; align-items: center; padding: 20px 0; }
+.deck-selector { text-align: center; }
+h3 { font-size: 16px; text-transform: uppercase; color: #aaa; margin-bottom: 15px; }
+
+/* Cartas de Conocimiento (Clash Volume) */
+.card-grid { display: flex; gap: 15px; justify-content: center; }
+.knowledge-card { 
+    background: #ecf0f1; border: none; border-radius: 15px; padding: 15px; 
+    color: #2c3e50; font-weight: bold; cursor: pointer; border-bottom: 6px solid #bdc3c7;
+    transition: 0.1s; width: 100px; text-align: center;
+}
+.knowledge-card .card-icon { font-size: 30px; margin-bottom: 5px; }
+.knowledge-card.physical.active { background: #3498db; color: white; border-color: #2980b9; transform: scale(1.05); }
+
+/* HUD DE BATALLA ESTILO FREE FIRE */
+.battle-hud-fire {
+    display: flex; justify-content: center; align-items: center; gap: 15px; padding: 15px;
+    border-top: 3px solid #444; border-radius: 20px;
 }
 
-.user-meta span { display: block; font-size: 11px; }
-.vivid-blue { color: var(--primary-vivid-blue); font-weight: 600; font-size: 13px !important; }
-.vivid-green { color: var(--primary-vivid-green); font-weight: 600; text-transform: uppercase; }
+.current-rank-display { text-align: center; width: 100px; }
+.current-rank-display span { font-family: var(--font-action); color: var(--vivid-gold); font-size: 13px; }
+.rank-bar { height: 8px; background: rgba(0,0,0,0.3); border-radius: 5px; margin-top: 3px; overflow: hidden; }
+#rank-bar-fill { height: 100%; width: 60%; background: var(--vivid-gold); }
 
-#streak-counter { color: #ff4757; font-weight: bold; font-size: 13px; border: 1px solid #ff4757; padding: 5px 12px; border-radius: 20px; background: rgba(255, 71, 87, 0.05); }
-
-#music-toggle { background: transparent; border: 1px solid #ddd; color: #777; padding: 5px 10px; border-radius: 10px; cursor: pointer; font-size: 11px; transition: 0.2s; }
-#music-toggle:hover { background: #eee; color: black; }
-
-/* EL MUNDO VISUAL - Adictivo y Colorido */
-#world-view {
-    flex-grow: 1; position: relative; overflow: hidden; margin: 20px; border-radius: 30px;
-    transition: background-color 2s, filter 2s; box-shadow: inset 0 0 50px rgba(0,0,0,0.05);
+#btn-start-battle {
+    padding: 15px 30px; background: var(--vivid-red); color: white; border: none;
+    border-radius: 15px; font-family: var(--font-action); font-size: 22px; font-weight: bold;
+    border-bottom: 8px solid var(--vivid-blood); cursor: pointer; transition: 0.1s;
 }
+#btn-start-battle:active { transform: translateY(4px); border-bottom-width: 4px; }
 
-/* MODOS DEL MUNDO (Grises vs Colores Vivos) */
-.polluted-world { background-color: var(--polluted-gray); filter: grayscale(100%) contrast(90%); }
-.vivid-world { 
-    background-color: transparent; 
-    background-image: linear-gradient(to top, #a8e063 0%, #3498db 100%); /* Cielo azul claro */
-    filter: grayscale(0%) contrast(100%); 
+/* --- BATALLA (VERTICAL - CLASH FUSION) --- */
+.battle-layout { height: 100%; display: flex; flex-direction: column; justify-content: space-between; }
+
+.arena-boss, .arena-player { height: 18%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+#boss-sprite { font-size: 60px; margin-top: 5px; }
+#player-sprite { font-size: 40px; }
+
+.health-container { width: 90%; position: relative; margin-bottom: 5px; }
+.hp-bar { width: 100%; height: 20px; background: #222; border: 3px solid #fff; border-radius: 10px; overflow: hidden; }
+#enemy-fill, #player-fill { width: 100%; height: 100%; transition: 0.3s; }
+#enemy-fill { background: var(--vivid-red); }
+#player-fill { background: var(--vivid-green); }
+.hp-label { position: absolute; width: 100%; text-align: center; font-size: 10px; top: 4px; font-weight: bold; text-shadow: 1px 1px 1px black; }
+
+/* QUIZ CLASH ZONE */
+#quiz-battle-zone { flex-grow: 1; background: rgba(0,0,0,0.2); border-radius: 20px; margin: 15px 0; padding: 15px; display: flex; flex-direction: column; }
+.quiz-bubble-clash { background: white; color: #2c3e50; padding: 15px; border-radius: 15px; min-height: 70px; margin-bottom: 15px; border-bottom: 4px solid #bdc3c7; }
+
+#options-clash-container { display: flex; flex-direction: column; gap: 10px; }
+.clash-option-btn { 
+    background: #34495e; color: white; border: none; padding: 10px 15px; border-radius: 10px;
+    font-weight: bold; border-bottom: 4px solid #1a252f; cursor: pointer; text-align: left;
+    font-size: 13px;
 }
+.clash-option-btn:hover { background: #3b5998; }
 
-#core-companion { position: absolute; top: 30%; left: 50%; transform: translateX(-50%); text-align: center; }
-#core-visual { font-size: 70px; animation: floating 2.5s infinite ease-in-out; cursor: pointer; filter: drop-shadow(0 0 15px rgba(52, 152, 219, 0.3)); }
-@keyframes floating { 0%, 100% { transform: translateY(0) scale(1); } 50% { transform: translateY(-15px) scale(1.05); } }
-
-/* Árboles y Naturaleza (Instat-aparecer con explosión pop) */
-#nature-container span { position: absolute; font-size: 35px; animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; opacity: 0; }
-@keyframes popIn { 0% { opacity: 0; transform: scale(0); } 70% { opacity: 1; transform: scale(1.1); } 100% { opacity: 1; transform: scale(1); } }
-
-.world-status { position: absolute; bottom: 20px; width: 100%; text-align: center; padding: 0 20px; }
-#env-msg { font-size: 13px; background: rgba(255,255,255,0.8); color: var(--text-dark); padding: 8px 15px; border-radius: 10px; box-shadow: var(--shadow-pop); display: inline-block; font-weight: 600; }
-
-/* CONSOLA DE ACCIÓNIA */
-.ai-console { background-color: var(--panel-white); padding: 20px; border-radius: 30px 30px 0 0; }
-
-.xp-progress-container { height: 16px; background: rgba(0,0,0,0.05); border-radius: 10px; position: relative; margin-bottom: 15px; overflow: hidden; border: 1px solid #eee; }
-#xp-fill { width: 0%; height: 100%; background: linear-gradient(90deg, var(--primary-vivid-blue), var(--primary-vivid-green)); transition: width 0.6s ease-out; }
-#xp-text { position: absolute; width: 100%; text-align: center; font-size: 11px; font-weight: bold; line-height: 16px; color: var(--text-dark); text-shadow: 0 1px 1px rgba(255,255,255,0.5); }
-
-.terminal-body { display: flex; flex-direction: column; gap: 10px; }
-#ai-chat-history { height: 60px; background: rgba(0,0,0,0.03); border-radius: 10px; padding: 10px; overflow-y: auto; color: #555; font-size: 13px; line-height: 1.4; }
-.user-msg { color: var(--primary-vivid-blue); }
-.ai-msg { color: var(--primary-vivid-green); font-weight: bold; }
-
-.input-group { display: flex; gap: 10px; }
-textarea { flex-grow: 1; background: rgba(0,0,0,0.02); border: 2px solid #eee; border-radius: 12px; padding: 10px; color: var(--text-main); font-family: var(--font-main); font-size: 13px; resize: none; transition: var(--transition-standard); }
-textarea:focus { border-color: var(--primary-vivid-blue); outline: none; background: #fff; }
-
-#btn-transmit {
-    background-color: var(--vivid-yellow); border: none; color: var(--text-dark); font-family: var(--font-main); font-weight: bold; font-size: 13px; padding: 0 20px; border-radius: 12px; cursor: pointer; transition: 0.2s; box-shadow: 0 4px 0 #d4a70a;
-}
-#btn-transmit:hover { background-color: #f39c12; }
-#btn-transmit:active { transform: translateY(2px); box-shadow: 0 2px 0 #d4a70a; }
+/* ANIMACIONES (Adictivo y Satisfactorio) */
+@keyframes shake { 0% { transform: translate(1px, 1px); } 20% { transform: translate(-3px, 0); } 40% { transform: translate(3px, 2px); } 100% { transform: translate(0,0); } }
+.shake { animation: shake 0.3s; }
