@@ -1,64 +1,233 @@
-:root {
-    --neon-blue: #00f2fe;
-    --neon-green: #2ecc71;
-    --deep-dark: #121212;
-    --card-bg: #1e1e2e;
-    --fire: #ff4757;
+// --- ESTADO DEL JUEGO Y CONFIGURACIÓN ---
+let game = {
+    xp: 0,
+    lvl: 1,
+    streak: 0,
+    isHealthy: false,
+    musicPlaying: false
+};
+
+// Configuración de los 10 Rangos (Para que quieran subir de nivel)
+const ranks = [
+    {xp: 0, name: "Semilla Inerte", icon: "🌑"},
+    {xp: 200, name: "Brote de Esperanza", icon: "🌱"},
+    {xp: 500, name: "Raíz Maestra", icon: "🌿"},
+    {xp: 900, name: "Tallo Guardián", icon: "🎍"},
+    {xp: 1400, name: "Hoja Fotosintética", icon: "🍃"},
+    {xp: 2000, name: "Arbusto Resiliente", icon: "🌳"},
+    {xp: 2800, name: "Árbol Sabio", icon: "🌲"},
+    {xp: 3800, name: "Bosque Ancestral", icon: "🏞️"},
+    {xp: 5000, name: "Bioma Legendario", icon: "🌍"},
+    {xp: 7000, name: "Guardián de Gaia", icon: "💎"}
+];
+
+// Emojis de Naturaleza Vivos para plantar
+const vividEmojis = ["🌳", "🌴", "🌲", "🌱", "🌿", "🍀", "🌸", "🌻", "🦋", "🍄"];
+
+// Referencias a elementos de la UI
+const ui = {
+    input: document.getElementById('task-input'),
+    chat: document.getElementById('ai-chat-history'),
+    xpFill: document.getElementById('xp-fill'),
+    xpText: document.getElementById('xp-text'),
+    rank: document.getElementById('rank-name'),
+    coreVisual: document.getElementById('core-visual'),
+    world: document.getElementById('world-view'),
+    nature: document.getElementById('nature-container'),
+    message: document.getElementById('env-msg'),
+    bgMusic: document.getElementById('bg-music'),
+    sfxSuccess: document.getElementById('sfx-success'),
+    musicBtn: document.getElementById('music-toggle'),
+    streak: document.getElementById('streak-counter')
+};
+
+// --- CONTROL DE MÚSICA Y AUDIO ---
+// La música se activa en el primer click (regla del navegador)
+function toggleMusic() {
+    if (game.musicPlaying) {
+        ui.bgMusic.pause();
+        ui.musicBtn.innerText = "🎵 OFF";
+    } else {
+        ui.bgMusic.play().catch(()=> {
+            console.log("Audio falló, interactúa primero.");
+        });
+        ui.musicBtn.innerText = "🎵 ON";
+    }
+    game.musicPlaying = !game.musicPlaying;
 }
 
-body {
-    margin: 0; font-family: 'Fredoka', sans-serif;
-    background: var(--deep-dark); color: white; overflow: hidden;
-    height: 100vh;
+// --- ACCIÓN PRINCIPAL ADICTIVA: handleStudySubmission ---
+function handleStudySubmission() {
+    const text = ui.input.value.trim();
+    
+    // Feedback visual si está vacío
+    if (!text) {
+        showAIResponse("ADVERTENCIA: No se ha detectado tema de estudio. Energía vital cero.");
+        triggerVisualError();
+        return;
+    }
+
+    // Calcular XP (Simulado, basado en longitud, adictivo)
+    const earnedXP = Math.min(Math.floor(text.length * 1.5), 100);
+    
+    // Inyectar XP y retroalimentación instantánea
+    addXP(earnedXP);
+    
+    // Simulación de IA Maestra (Resuelve tu problema de aprendizaje)
+    const aiHack = generateAIStudyHack(text);
+    showAIResponse(text, aiHack, earnedXP);
+    
+    // Feedback sonoro y visual
+    ui.sfxSuccess.play();
+    ui.input.value = "";
+    
+    // Plantar visualmente la naturaleza (explosión adictiva)
+    plantNature(earnedXP > 50 ? 3 : 1);
+    
+    // Iniciar racha (siempre adictivo)
+    incrementStreak();
 }
 
-#game-container { display: flex; flex-direction: column; height: 100vh; max-width: 500px; margin: auto; }
-
-/* HUD Superior */
-.hud-top {
-    padding: 15px; display: flex; justify-content: space-between; align-items: center;
-    background: rgba(30, 30, 46, 0.9); border-bottom: 2px solid var(--neon-blue);
+// --- GESTIÓN DE PUNTOS Y NIVELES (El bucle de adicción) ---
+function addXP(amount) {
+    game.xp += amount;
+    
+    // Subida de nivel visual (cada 250 xp de bachillerato)
+    game.lvl = Math.floor(game.xp / 250) + 1;
+    
+    // Feedback visual de level up instantáneo
+    ui.coreVisual.style.transform = "scale(1.2)";
+    setTimeout(()=> ui.coreVisual.style.transform = "scale(1)", 300);
+    
+    updateUI();
 }
 
-.user-profile { display: flex; gap: 10px; cursor: pointer; }
-#avatar-container { font-size: 30px; background: #333; border-radius: 50%; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border: 2px solid var(--neon-blue); }
-.user-info span { display: block; font-size: 12px; }
-#player-name { font-weight: bold; font-family: 'Orbitron'; color: var(--neon-blue); }
+// --- ACTUALIZACIÓN DE LA INTERFAZ (UI Modernizada - ¡Adiós Neón!) ---
+function updateUI() {
+    // 1. Encontrar el Rango Actual
+    let rankIdx = 0;
+    for (let i = ranks.length - 1; i >= 0; i--) {
+        if (game.xp >= ranks[i].xp) {
+            rankIdx = i;
+            break;
+        }
+    }
+    const currentRank = ranks[rankIdx];
 
-.streak-counter { background: rgba(255, 71, 87, 0.2); padding: 5px 15px; border-radius: 20px; border: 1px solid var(--fire); }
+    // 2. Actualizar textos con colores vivos (vivid-blue y vivid-green)
+    ui.rank.innerText = `Rango: ${currentRank.name}`;
+    ui.rank.className = game.xp > 500 ? "vivid-blue" : "vivid-green";
 
-/* Mundo y Mascota */
-#world-viewport { flex-grow: 1; position: relative; transition: 1s; overflow: hidden; }
-.gray-land { background: #2c3e50; filter: grayscale(0.8); }
-.vivid-land { background: linear-gradient(to top, #134e5e, #71b280); filter: grayscale(0); }
+    // 3. Barra de XP (Progresión visual adictiva de 0 a 250)
+    const xpInLevel = game.xp % 250;
+    const progressPercent = (xpInLevel / 250) * 100;
+    ui.xpFill.style.width = progressPercent + "%";
+    ui.xpText.innerText = `${xpInLevel} / 250 XP (LVL ${game.lvl})`;
 
-#pet-companion {
-    position: absolute; bottom: 20%; right: 20px;
-    font-size: 50px; text-align: center; transition: 0.5s;
-    filter: drop-shadow(0 0 10px white);
+    // 4. Transformación Visual del Mundo (A partir del rango Tallo Guardián)
+    if (rankIdx >= 3 && !game.isHealthy) {
+        game.isHealthy = true;
+        transitionWorld('healthy');
+    } else if (rankIdx < 3 && game.isHealthy) {
+        game.isHealthy = false;
+        transitionWorld('polluted');
+    }
 }
 
-#pet-speech {
-    position: absolute; top: -60px; right: 0; background: white; color: black;
-    padding: 8px; border-radius: 10px; font-size: 12px; width: 120px;
+// --- GENERADOR DE RESPUESTAS DE IA SIMULADA (Resuelve problemas) ---
+function generateAIStudyHack(userInput) {
+    const hacks = [
+        `Hack de estudio para '${userInput.substring(0,10)}...': Prueba la técnica Pomodoro (25 min de estudio intenso, 5 de descanso).`,
+        `¡Transmisión validada! Consejo Maestra IA: Explica '${userInput.substring(0,15)}...' en voz alta a alguien (Técnica Feynman) para dominarlo.`,
+        `Energía vital registrada. Tip de bachillerato: Crea un mapa mental visual de '${userInput.substring(0,10)}...' para conectar ideas rápido.`,
+        `Cargando red neuronal... El Oráculo aconseja: No solo leas '${userInput.substring(0,10)}...', haz autoevaluaciones flash de 5 min.`
+    ];
+    return hacks[Math.floor(Math.random() * hacks.length)];
 }
 
-/* Terminal IA */
-.ai-terminal { background: var(--card-bg); padding: 15px; border-radius: 30px 30px 0 0; }
-.xp-progress { height: 20px; background: #333; border-radius: 10px; position: relative; margin-bottom: 10px; overflow: hidden; }
-#xp-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--neon-blue), var(--neon-green)); transition: 1s; }
-#xp-text { position: absolute; width: 100%; text-align: center; font-size: 10px; line-height: 20px; font-weight: bold; }
+function showAIResponse(userText, aiHack, xp) {
+    // Limpiar chat anterior
+    ui.chat.innerHTML = "";
+    
+    // Mensaje de Usuario
+    const userLine = document.createElement('p');
+    userLine.className = "user-msg";
+    userLine.innerText = `► TRANSMITIENDO: ${userText.substring(0, 30)}... +${xp} XP`;
+    ui.chat.appendChild(userLine);
+    
+    // Mensaje de IA Maestra
+    const aiLine = document.createElement('p');
+    aiLine.className = "ai-msg";
+    aiLine.innerText = `► ORÁCULO: ${aiHack}`;
+    ui.chat.appendChild(aiLine);
+    
+    // Auto scroll
+    ui.chat.scrollTop = ui.chat.scrollHeight;
+}
 
-.terminal-body { display: flex; flex-direction: column; gap: 10px; }
-#ai-chat-history { height: 80px; overflow-y: auto; background: rgba(0,0,0,0.3); padding: 10px; border-radius: 10px; font-size: 13px; color: #aaa; }
-textarea { background: #2c2c3e; border: 1px solid #444; color: white; border-radius: 10px; padding: 10px; resize: none; }
-#btn-transmit { background: var(--neon-blue); border: none; padding: 12px; border-radius: 10px; font-family: 'Orbitron'; font-weight: bold; cursor: pointer; }
+// --- TRANSFORMACIÓN ADICTIVA DEL MUNDO (Grises vs Colores Vivos) ---
+function transitionWorld(state) {
+    if (state === 'healthy') {
+        ui.world.className = "vivid-world";
+        ui.message.innerText = "¡La Cyber-Gaia se ha activado! Sigue plantando vida.";
+        ui.message.style.color = "var(--primary-vivid-green)";
+        plantNature(5); // Plantar muchos árboles al activarse
+    } else {
+        ui.world.className = "polluted-world";
+        ui.message.innerText = "Ecosistema inerte. Esperando tu conocimiento.";
+        ui.message.style.color = "var(--text-dark)";
+        ui.nature.innerHTML = ""; // Limpiar árboles si vuelve a contaminarse
+    }
+}
 
-/* Boss y Modales */
-#boss-container { position: absolute; top: 20%; left: 50%; transform: translateX(-50%); text-align: center; }
-#boss-visual { font-size: 80px; animation: float 2s infinite; }
-@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-20px); } }
+// --- MECÁNICA DE PLANTAR (Explosión Visual popIn secuencial) ---
+function plantNature(count) {
+    // Solo plantar si el mundo ha sanado visualmente (Nivel > 1 visualmente)
+    if (game.xp < ranks[1].xp) return;
 
-.modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 100; display: flex; align-items: center; justify-content: center; }
-.card-content { background: linear-gradient(45deg, #1e1e2e, #3a3a5a); padding: 30px; border-radius: 20px; border: 3px solid var(--neon-blue); text-align: center; width: 300px; }
-.hidden { display: none; }
+    for (let i = 0; i < count; i++) {
+        // Retraso para que se vea la explosión secuencial
+        setTimeout(() => {
+            const span = document.createElement('span');
+            span.innerText = vividEmojis[Math.floor(Math.random() * vividEmojis.length)];
+            
+            // Posición aleatoria en el canvas
+            span.style.left = Math.random() * 85 + 5 + "%"; 
+            span.style.top = Math.random() * 60 + 15 + "%";
+            
+            // Profundidad z-index aleatoria
+            span.style.zIndex = Math.floor(Math.random() * 5);
+            
+            ui.nature.appendChild(span);
+        }, i * 100);
+    }
+}
+
+// --- MECÁNICAS EXTRA DE ADICCIÓN ---
+function incrementStreak() {
+    game.streak++;
+    ui.streak.innerText = `🔥 ${game.streak}`;
+    ui.streak.style.transform = "scale(1.2)";
+    setTimeout(()=> ui.streak.style.transform = "scale(1)", 200);
+}
+
+function triggerVisualError() {
+    ui.input.style.borderColor = "#ff4757";
+    ui.input.style.boxShadow = "0 0 10px rgba(255, 71, 87, 0.2)";
+    setTimeout(() => {
+        ui.input.style.borderColor = "#eee";
+        ui.input.style.boxShadow = "none";
+    }, 500);
+}
+
+// --- INICIAR JUEGO MAESTRO VIVO Y MODERNO ---
+function init() {
+    updateUI();
+    // La música se activará en el primer clic que dé el usuario en cualquier lugar.
+    document.addEventListener('click', function musicInitializer() {
+        toggleMusic(); // Intenta prender la música
+        document.removeEventListener('click', musicInitializer); // Quitar este detector
+    }, { once: true });
+}
+
+init();
