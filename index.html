@@ -3,40 +3,79 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Clash of Knowledge</title>
+    <title>Clash of Knowledge: Realms</title>
+    <link rel="icon" href="https://cdn.icon-scout.com/icon/free/png-256/free-clash-royale-3628751-3029961.png" type="image/x-icon">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
+<body class="theme-arena1"> 
     <div id="game-container">
-        <header>
-            <div class="stats">
-                <span id="rank-name">Rango: Bronce</span>
-                <span id="trophies">🏆 0</span>
+        
+        <header class="glass-header">
+            <div class="user-stats">
+                <div class="stat-badge trophies">
+                    <span class="icon">🏆</span>
+                    <span id="trophies">0</span>
+                </div>
+                <div class="stat-badge crowns">
+                    <span class="icon">👑</span>
+                    <span id="total-crowns">0</span>
+                </div>
+            </div>
+            <div id="rank-card">
+                <span id="rank-text">ARENA 1</span>
             </div>
         </header>
 
-        <div id="setup-screen">
-            <h1>Selecciona tu Batalla</h1>
-            <select id="subject-select">
-                <option value="fisica">Física</option>
-                <option value="quimica">Química</option>
-                <option value="matematicas">Matemáticas</option>
-                <option value="biologia">Biología</option>
-            </select>
-            <button onclick="startBattle()">¡BATALLA!</button>
+        <div id="setup-screen" class="screen show">
+            <div class="logo-container">
+                <h1 class="game-title">CLASH <br>OF<br><span class="highlight">KNOWLEDGE</span></h1>
+                <p class="subtitle">REALMS</p>
+            </div>
+            <div class="menu-box">
+                <label class="section-label">Selecciona Materia</label>
+                <div class="custom-select-wrapper">
+                    <select id="subject-select">
+                        <option value="Física">Física ⚡</option>
+                        <option value="Química">Química 🧪</option>
+                        <option value="Matemáticas">Matemáticas 📐</option>
+                        <option value="Biología">Biología 🌿</option>
+                    </select>
+                </div>
+                <button class="btn-battle" onclick="startBattle()">
+                    <span class="btn-text">¡BATALLA!</span>
+                    <span class="btn-shadow"></span>
+                </button>
+            </div>
         </div>
 
-        <div id="battle-screen" class="hidden">
-            <div id="ia-message" class="bubble">Esperando pregunta...</div>
-            <div id="quiz-container">
-                <h2 id="question-text">Pregunta</h2>
-                <div id="options-container"></div>
+        <div id="battle-screen" class="screen hidden">
+            <div class="ia-opponent">
+                <img src="https://cdn-icons-png.flaticon.com/512/6028/6028503.png" class="ia-avatar" alt="IA">
+                <div class="ia-speech-bubble">
+                    <p id="ia-dialogue">¡Acepta el desafío!</p>
+                </div>
             </div>
-            <div class="battle-footer">
-                <span id="question-count">Pregunta: 1/10</span>
+            
+            <div class="quiz-card">
+                <div class="quiz-header">
+                    <span id="question-count">Pregunta 1 de 10</span>
+                </div>
+                <div class="quiz-body">
+                    <h2 id="question-text">Cargando desafío...</h2>
+                    <div id="options-container">
+                        </div>
+                </div>
             </div>
         </div>
     </div>
-    <script src="script.js"></script>
+
+    <script type="importmap">
+    {
+      "imports": {
+        "@google/generative-ai": "https://esm.run/@google/generative-ai"
+      }
+    }
+    </script>
+    <script type="module" src="script.js"></script>
 </body>
 </html>
