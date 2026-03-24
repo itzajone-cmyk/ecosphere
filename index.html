@@ -3,61 +3,75 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EcoSphere | Academia Viva 2027</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css">
+    <title>Clash of Knowledge | Academy Royale</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="game-container">
-        <header class="hud-top glass-panel">
-            <div class="user-profile">
-                <div class="avatar-badge">👤</div>
-                <div class="user-meta">
-                    <span id="player-name" class="vivid-blue">Estudiante_Gaia_01</span>
-                    <span id="rank-name" class="vivid-green">Rango: Semilla</span>
-                </div>
-            </div>
-            <div class="game-controls">
-                <span id="streak-counter">🔥 0</span>
-                <button id="music-toggle" onclick="toggleMusic()">🎵 ON</button>
-            </div>
-        </header>
+    <div id="app-container">
+        
+        <div id="menu-screen" class="screen">
+            <header class="menu-header">
+                <div class="trophy-count">🏆 <span id="user-trophies">0</span></div>
+                <h1>ACADEMY ROYALE</h1>
+            </header>
 
-        <main id="world-view" class="polluted-world">
-            <div id="nature-container"></div>
-            <div id="core-companion" class="pulsing-crystal">
-                <div id="core-visual">💎</div>
-            </div>
-            <div class="world-status">
-                <p id="env-msg">Ecosistema inerte. Esperando tu conocimiento.</p>
-            </div>
-        </main>
+            <main class="arena-selection">
+                <h3>ELIGE TU ARENA</h3>
+                <div class="subject-grid">
+                    <button class="subject-card active" onclick="selectSubject('Física')">
+                        <div class="card-icon">⚡</div>
+                        <span>Física</span>
+                    </button>
+                    <button class="subject-card" onclick="selectSubject('Química')">
+                        <div class="card-icon">🧪</div>
+                        <span>Química</span>
+                    </button>
+                    <button class="subject-card" onclick="selectSubject('Historia')">
+                        <div class="card-icon">🏛️</div>
+                        <span>Historia</span>
+                    </button>
+                    <button class="subject-card" onclick="selectSubject('Mates')">
+                        <div class="card-icon">🔢</div>
+                        <span>Mates</span>
+                    </button>
+                </div>
+            </main>
 
-        <footer class="ai-console glass-panel">
-            <div class="xp-progress-container">
-                <div id="xp-fill"></div>
-                <span id="xp-text">0 / 250 XP (LVL 1)</span>
+            <footer class="menu-footer">
+                <button id="btn-battle" onclick="startBattle()">¡BATALLA!</button>
             </div>
-            
-            <div class="terminal-body">
-                <div id="ai-chat-history">
-                    <p class="ai-msg">Soy el Oráculo. Transmite tu tema de estudio para evolucionar el bioma.</p>
+        </div>
+
+        <div id="battle-screen" class="screen hidden">
+            <div class="boss-area">
+                <div class="health-container">
+                    <div class="hp-bar enemy-hp"><div id="enemy-fill"></div></div>
+                    <span class="hp-label">BOSS IA</span>
                 </div>
-                <div class="input-group">
-                    <textarea id="task-input" placeholder="Escribe aquí el tema que estudiaste hoy... Describe tu problema..."></textarea>
-                    <button onclick="handleStudySubmission()" id="btn-transmit">PLANTAR 🌿</button>
+                <div id="boss-sprite">👹</div>
+            </div>
+
+            <div id="quiz-zone">
+                <div class="quiz-bubble">
+                    <p id="question-text">Preparando desafío...</p>
+                </div>
+                <div id="options-container">
+                    </div>
+            </div>
+
+            <div class="player-area">
+                <div id="player-sprite">🛡️</div>
+                <div class="health-container">
+                    <div class="hp-bar player-hp"><div id="player-fill"></div></div>
+                    <span class="hp-label">TÚ (GUERRERO)</span>
                 </div>
             </div>
-        </footer>
+        </div>
+
+        <audio id="bg-music" loop src="https://codeskulptor-demos.commondatastorage.googleapis.com/descent/background%20music.mp3"></audio>
+        <audio id="sfx-hit" src="https://codeskulptor-demos.commondatastorage.googleapis.com/descent/got%20it.mp3"></audio>
     </div>
-
-    <audio id="bg-music" loop>
-        <source src="https://codeskulptor-demos.commondatastorage.googleapis.com/descent/background%20music.mp3" type="audio/mpeg">
-    </audio>
-    <audio id="sfx-success">
-        <source src="https://codeskulptor-demos.commondatastorage.googleapis.com/descent/got%20it.mp3" type="audio/mpeg">
-    </audio>
-
-    <script src="./script.js"></script>
+    <script src="script.js"></script>
 </body>
 </html>
