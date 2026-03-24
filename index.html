@@ -3,48 +3,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>EcoSphere Odyssey | Cyber-Academia v1.0</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Orbitron:wght@700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="./style.css"> </head>
+    <title>EcoSphere | Academia Viva 2027</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./style.css">
+</head>
 <body>
     <div id="game-container">
         <header class="hud-top glass-panel">
             <div class="user-profile">
-                <div class="avatar-glow">👤</div>
+                <div class="avatar-badge">👤</div>
                 <div class="user-meta">
-                    <span id="player-name" class="neon-text-blue">Guerrero_Gaia_01</span>
-                    <span id="rank-name" class="vivid-text-green">Rango: Novato</span>
+                    <span id="player-name" class="vivid-blue">Estudiante_Gaia_01</span>
+                    <span id="rank-name" class="vivid-green">Rango: Semilla</span>
                 </div>
             </div>
             <div class="game-controls">
-                <span id="streak-counter" class="pulse-red">🔥 0</span>
+                <span id="streak-counter">🔥 0</span>
                 <button id="music-toggle" onclick="toggleMusic()">🎵 ON</button>
             </div>
         </header>
 
-        <main id="world-view" class="glass-canvas polluted-desert">
+        <main id="world-view" class="polluted-world">
             <div id="nature-container"></div>
             <div id="core-companion" class="pulsing-crystal">
                 <div id="core-visual">💎</div>
             </div>
             <div class="world-status">
-                <p id="env-msg" class="neon-text-green">Ecosistema Crítico. Esperando Transmisión.</p>
+                <p id="env-msg">Ecosistema inerte. Esperando tu conocimiento.</p>
             </div>
         </main>
 
         <footer class="ai-console glass-panel">
-            <div class="xp-progress-bar">
+            <div class="xp-progress-container">
                 <div id="xp-fill"></div>
-                <span id="xp-text">0 / 250 XP</span>
+                <span id="xp-text">0 / 250 XP (LVL 1)</span>
             </div>
             
             <div class="terminal-body">
                 <div id="ai-chat-history">
-                    <p class="ai-line line-1">► [ESTADO: EN ESPERA]</p>
-                    <p class="ai-line line-2">► Transmite tu tema de estudio para alimentar el núcleo.</p>
+                    <p class="ai-msg">Soy el Oráculo. Transmite tu tema de estudio para evolucionar el bioma.</p>
                 </div>
-                <div class="input-area">
-                    <textarea id="task-input" placeholder="¿Qué tema de bachillerato estudiaste hoy? Describe tu problema aquí..."></textarea>
+                <div class="input-group">
+                    <textarea id="task-input" placeholder="Escribe aquí el tema que estudiaste hoy... Describe tu problema..."></textarea>
                     <button onclick="handleStudySubmission()" id="btn-transmit">PLANTAR 🌿</button>
                 </div>
             </div>
@@ -58,5 +58,6 @@
         <source src="https://codeskulptor-demos.commondatastorage.googleapis.com/descent/got%20it.mp3" type="audio/mpeg">
     </audio>
 
-    <script src="./script.js"></script> </body>
+    <script src="./script.js"></script>
+</body>
 </html>
